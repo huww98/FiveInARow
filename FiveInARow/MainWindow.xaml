@@ -5,8 +5,121 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FiveInARow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="五子棋" Height="400" Width="525">
+    <Window.Resources>
+        <local:ChessPieceKindValueConverter x:Key="ChessPieceKindValueConverter" />
+        <local:PlayerKindValueConverter x:Key="PlayerKindValueConverter" />
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Column="0">
+            <Grid>
+                <Canvas x:Name="chessboardBackground" Width="315" Height="315"  Background="White">
+                    <Line Canvas.Left="10" Canvas.Top="10.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="31.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="52.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="73.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="94.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="115.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="136.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="157.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="178.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="199.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="220.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="241.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="262.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="283.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+                    <Line Canvas.Left="10" Canvas.Top="304.5" X1="0" X2="295" Y1="0" Y2="0" Stroke="Black" />
+
+                    <Line Canvas.Left="10.5"  Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="31.5"  Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="52.5"  Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="73.5"  Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="94.5"  Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="115.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="136.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="157.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="178.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="199.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="220.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="241.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="262.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="283.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+                    <Line Canvas.Left="304.5" Canvas.Top="10" X1="0" X2="0" Y1="0" Y2="295" Stroke="Black" />
+
+                    <Ellipse Width="5" Height="5" Fill="Black" Canvas.Left="155" Canvas.Top="155" />
+                    <Canvas x:Name="chessboardCanvas" Width="315" Height="315" />
+                </Canvas>
+            </Grid>
+        </Viewbox>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox Header="{Binding BlackPlayer.Name}" d:DataContext="{d:DesignInstance {x:Type local:Chessboard}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="用时：" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="BlackPlayer.UsedTime.Hours" />
+                                <Binding Path="BlackPlayer.UsedTime.Minutes" />
+                                <Binding Path="BlackPlayer.UsedTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <Label Content="玩家：" Grid.Row="1" />
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <TextBlock VerticalAlignment="Center" Text="{Binding BlackPlayer.Kind, Converter={StaticResource PlayerKindValueConverter}}" />
+                        <Button x:Name="blackPlayerSwitch" Content="切换" Click="blackPlayerSwitch_Click" />
+                    </StackPanel>
+                    <Label Content="执子：" Grid.Row="2" />
+                    <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"
+                               Text="{Binding BlackPlayer.UsingChessPiece, Converter={StaticResource ChessPieceKindValueConverter}}" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{Binding WritePlayer.Name}" d:DataContext="{d:DesignInstance {x:Type local:Chessboard}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="用时：" />
+                    <TextBlock VerticalAlignment="Center" Grid.Column="1">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="WritePlayer.UsedTime.Hours" />
+                                <Binding Path="WritePlayer.UsedTime.Minutes" />
+                                <Binding Path="WritePlayer.UsedTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <Label Content="玩家：" Grid.Row="1" />
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <TextBlock VerticalAlignment="Center" Text="{Binding WritePlayer.Kind, Converter={StaticResource PlayerKindValueConverter}}" />
+                        <Button x:Name="writePlayerSwitch" Content="切换" Click="writePlayerSwitch_Click" />
+                    </StackPanel>
+                    <Label Content="执子：" Grid.Row="2" />
+                    <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"
+                               Text="{Binding WritePlayer.UsingChessPiece, Converter={StaticResource ChessPieceKindValueConverter}}" />
+                </Grid>
+            </GroupBox>
+            <Button Content="开始游戏" Click="Button_Click" />
+        </StackPanel>
     </Grid>
 </Window>
