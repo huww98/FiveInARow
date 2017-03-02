@@ -52,6 +52,9 @@
 
                     <Ellipse Width="5" Height="5" Fill="Black" Canvas.Left="155" Canvas.Top="155" />
                     <Canvas x:Name="chessboardCanvas" Width="315" Height="315" />
+                    <Canvas Width="315" Height="315">
+                        <Polygon x:Name="previousMoveIndicator" Fill="Blue" Points="17,10 10,17 17,17" Visibility="Hidden" />
+                    </Canvas>
                 </Canvas>
             </Grid>
         </Viewbox>

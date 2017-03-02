@@ -45,7 +45,8 @@ namespace FiveInARow
             chessboard = new Chessboard();
             chessboard.ChessPiecePlaced += Chessboard_ChessPiecePlaced;
 
-            chessboardCanvas.Children.RemoveRange(0, chessboardCanvas.Children.Count);
+            chessboardCanvas.Children.Clear();
+            previousMoveIndicator.Visibility = Visibility.Hidden;
             Player player1 = new Player { Name = "玩家1", Kind = PlayerKind.Human };
             Player player2 = new Player { Name = "玩家2", Kind = PlayerKind.Human };
             chessboard.BlackPlayer = player1;
@@ -134,8 +135,13 @@ namespace FiveInARow
         {
             var chessPiece = createChessPieceShape(chessPieceInfo.Kind);
             chessPiece.Visibility = Visibility.Visible;
-            Canvas.SetLeft(chessPiece, chessPieceInfo.X * chessboardSizePerLine + chessPieceOffset);
-            Canvas.SetTop(chessPiece, chessPieceInfo.Y * chessboardSizePerLine + chessPieceOffset);
+            previousMoveIndicator.Visibility = Visibility.Visible;
+            double left = chessPieceInfo.X * chessboardSizePerLine + chessPieceOffset;
+            var top = chessPieceInfo.Y * chessboardSizePerLine + chessPieceOffset;
+            Canvas.SetLeft(chessPiece, left);
+            Canvas.SetTop(chessPiece, top);
+            Canvas.SetLeft(previousMoveIndicator, left);
+            Canvas.SetTop(previousMoveIndicator, top);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -176,12 +182,18 @@ namespace FiveInARow
 
         private void blackPlayerSwitch_Click(object sender, RoutedEventArgs e)
         {
-            switchPlayerKind(chessboard.BlackPlayer);
+            if (chessboard != null)
+            {
+                switchPlayerKind(chessboard.BlackPlayer);
+            }
         }
 
         private void writePlayerSwitch_Click(object sender, RoutedEventArgs e)
         {
-            switchPlayerKind(chessboard.WritePlayer);
+            if (chessboard != null)
+            {
+                switchPlayerKind(chessboard.WritePlayer);
+            }
         }
 
         private void chessboard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
